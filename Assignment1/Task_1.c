@@ -2,23 +2,22 @@
 // • Print: success message + returned file descriptor.
 // • Handle errors using perror().
 
+#include<stdio.h>
+#include <fcntl.h>
+#include<string.h>
+#include<errno.h>
+#include<stdlib.h>
 
 /////////////////////////////////////////////////////////////////
 //
 // Function name : OpenFile
 // Description   : open file with given name of file.
 // Input         : char*
-// output        : int
+// output        : void
 // Author        : Mangesh Ashok Bedre.
 // Date          : 20/12/2025
 //
 /////////////////////////////////////////////////////////////////
-
-#include<stdio.h>
-#include <fcntl.h>
-#include<string.h>
-#include<errno.h>
-#include<stdlib.h>
 
 void OpenFile(char * FileName)
 {
@@ -31,7 +30,8 @@ void OpenFile(char * FileName)
         perror("Failed to open ");
         exit(EXIT_FAILURE);        
     }
-    printf("File open successfully with fd %d\n",fd);    
+    printf("File open successfully with fd %d\n",fd); 
+    close(fd);   
 }
 //////////////////////////////////////////////////////////////////
 //
@@ -40,16 +40,10 @@ void OpenFile(char * FileName)
 //  Date          : 20/12/2025
 //
 //////////////////////////////////////////////////////////////////
-int main()
+int main(int argc, char **argv)
 {
-    char FileName[100];
-
-    memset(FileName,'\0',sizeof(FileName));
-
-    printf("Enter the Name of File to be open : \n");
-    scanf("%s['^\n']",FileName);
-
-    OpenFile(FileName);
+    
+    OpenFile(argv[1]);
     
     return 0;
 }

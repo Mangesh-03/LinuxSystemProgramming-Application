@@ -36,7 +36,7 @@ void ChkPermission(char * FileName, char *mode)
     {
         permission = X_OK;
     }
-
+    
     iRet = access(FileName,permission | F_OK);
 
     if(iRet == 0)
@@ -58,22 +58,9 @@ void ChkPermission(char * FileName, char *mode)
 //  Date          : 20/12/2025
 //
 //////////////////////////////////////////////////////////////////
-int main()
+int main(int argc,char **argv)
 {
-    char FileName[50];
-    char mode[30];
-    
-    memset(FileName,'\0',sizeof(FileName));
-
-    printf("Enter the file name : \n");
-    scanf("%s",FileName);
-
-    memset(mode,'\0',sizeof(mode));
-
-    printf("Enter the mode(read/write/execute) : \n");
-    scanf(" %s",mode);
-
-    ChkPermission(FileName,mode);
+    ChkPermission(argv[1],argv[2]);
 
     return 0;
 }

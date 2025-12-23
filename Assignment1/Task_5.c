@@ -20,20 +20,23 @@
 //
 /////////////////////////////////////////////////////////////////
 
-void ReadFile(char * FileName,int bytes)
+void ReadFile(char * FileName,char *bytes)
 {
     int iRet = 0,fd = 0;
     char buffer[100];
+
+    int byte = bytes[0] - '0'; 
     
     fd = open(FileName,O_RDONLY);
 
-    iRet = read(fd,buffer,bytes);
+    iRet = read(fd,buffer,byte);
 
     if(iRet == -1)
     {
         perror("Unable to read");
     }
     printf("Number of bytes read %d\n",iRet);
+    close(fd);
     
 }
 
@@ -44,20 +47,9 @@ void ReadFile(char * FileName,int bytes)
 //  Date          : 20/12/2025
 //
 //////////////////////////////////////////////////////////////////
-int main()
+int main(int argc,char **argv)
 {
-    char FileName[50];
-    int bytes = 0;
-    
-    memset(FileName,'\0',sizeof(FileName));
-
-    printf("Enter the file name : \n");
-    scanf("%s",FileName);
-
-    printf("Enter number of bytes :\n");
-    scanf("%d",&bytes);
-
-    ReadFile(FileName,bytes);
+    ReadFile(argv[1],argv[2]);
 
     return 0;
 }

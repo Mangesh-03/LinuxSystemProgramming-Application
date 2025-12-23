@@ -19,32 +19,31 @@
 //
 /////////////////////////////////////////////////////////////////
 
-void OpenFile(char * FileName,char mode)
+void OpenFile(char *FileName,char *mode)
 {
     int fd = 0;
     int iFlag = 0;
 
-    switch(mode)
+    if((strcmp(mode,"r")) == 0)
     {
-        case 'R':
-            iFlag = O_RDONLY ;
-            break;
-
-        case 'W':
-            iFlag = O_WRONLY | O_CREAT;
-            break;
-            
-        case 'r':
-            iFlag = O_RDWR | O_CREAT;
-            break;
-
-        case 'A':
-            iFlag = O_WRONLY | O_APPEND | O_CREAT;
-            break;
-
-        default:
-            printf("Invalid mode\n");
-            exit(EXIT_FAILURE);
+        iFlag = O_RDWR | O_CREAT;
+    }
+    else if((strcmp(mode,"R")) == 0)
+    {
+        iFlag = O_RDONLY;
+    }
+    else if((strcmp(mode,"W")) == 0)
+    {
+        iFlag = O_WRONLY | O_CREAT;
+    }
+    else if((strcmp(mode,"A")) == 0)
+    {
+        iFlag = O_WRONLY | O_APPEND | O_CREAT;
+    }
+    else
+    {
+        perror("Invalid mode :");
+        exit(EXIT_FAILURE);
     }
 
     fd = open(FileName,iFlag,0777);
@@ -54,7 +53,8 @@ void OpenFile(char * FileName,char mode)
         perror("Failed to open");
         exit(EXIT_FAILURE);        
     }
-    printf("File open successfully with fd %d with mode : %c\n",fd,mode);    
+    printf("File open successfully with fd %d with mode : %s\n",fd,mode);  
+    close(fd);  
 }
 //////////////////////////////////////////////////////////////////
 //
@@ -63,20 +63,10 @@ void OpenFile(char * FileName,char mode)
 //  Date          : 20/12/2025
 //
 //////////////////////////////////////////////////////////////////
-int main()
+int main(int argc,char **argv)
 {
-    char FileName[100];
-    char mode = '\0';
-
-    memset(FileName,'\0',sizeof(FileName));
-
-    printf("Enter the Name of File to be open : \n");
-    scanf("%s",FileName);
-
-    printf("Enter mode for open file (R, W, r(RW), A)\n");
-    scanf(" %c",&mode);
-
-    OpenFile(FileName,mode);
+    
+    OpenFile(argv[1],argv[2]);
     
     return 0;
 }

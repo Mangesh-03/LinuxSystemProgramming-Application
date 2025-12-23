@@ -47,16 +47,9 @@ void DisplayInfo(char * FileName)
 //  Date          : 20/12/2025
 //
 //////////////////////////////////////////////////////////////////
-int main()
+int main(int argc,char **argv)
 {
-    char FileName[50];
-    
-    memset(FileName,'\0',sizeof(FileName));
-
-    printf("Enter the file name : \n");
-    scanf("%s",FileName);
-
-    DisplayInfo(FileName);
+    DisplayInfo(argv[1]);
 
     return 0;
 }
