@@ -33,16 +33,22 @@ void ReadFile(char * FileName)
     int fd = 0,iRet = 0;
     char buffer[BUFFER_SIZE];
 
+    // memset() -> used here for initialed buffer with default value.
     memset(buffer,'\0',BUFFER_SIZE);
 
+    // open() -> for open regular file.
     fd = open(FileName,O_RDONLY);
 
     if(fd == -1)
     {
         perror("Failed to open ");
+
+        // exit() -> function causes normal process termination and
+        //           send status to parent.
         exit(EXIT_FAILURE);        
     }
 
+    // read() -> used to read data from the file.
     iRet = read(fd,buffer,BUFFER_SIZE);
     
     
@@ -57,7 +63,11 @@ void ReadFile(char * FileName)
     }
     if(iRet == -1)
     {
+        //perror() -> Handling error using errno ,printed it at stderr
         perror("Failed to read");
+        
+        // exit() -> function causes normal process termination and
+        //           send status to parent.
         exit(EXIT_FAILURE); 
     }
     close(fd);
@@ -72,6 +82,13 @@ void ReadFile(char * FileName)
 
 int main(int argc,char *argv[])
 {   
+    // Handing segmentation fault in case no agrument passed by user.
+    if(argc != 3)
+    {
+        printf("Usage: %s <file_name> \n", argv[0]);
+        return -1;
+    }
+
     ReadFile(argv[1]);
       
     return 0;

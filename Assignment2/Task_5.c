@@ -54,6 +54,8 @@ void LargeFile(char * DirName)
         {
             continue;
         }
+
+        // stat() => used retrive metadata about file from inode
         iRet = stat(ptr->d_name,&sobj);
         if(iRet == -1)
         {
@@ -72,6 +74,7 @@ void LargeFile(char * DirName)
     
     printf("\nLargest file name : %s and its size is %d bytes\n",str,max);
     
+    // closedir() => function closes the directory stream associated  with dirp.
     closedir(fd);
 
 }
@@ -85,6 +88,13 @@ void LargeFile(char * DirName)
 
 int main(int argc,char *argv[])
 {   
+    // Handing segmentation fault in case no agrument passed by user.
+    if(argc != 3)
+    {
+        printf("Usage: %s <Directory_name> \n", argv[0]);
+        return -1;
+    }
+
     LargeFile(argv[1]);
       
     return 0;

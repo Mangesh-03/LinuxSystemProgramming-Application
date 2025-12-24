@@ -28,6 +28,7 @@ void ChkType(char * DirName)
     DIR *fd = NULL;
     struct dirent *ptr =  NULL;
     
+    // opendir() => used to open directory file.
     fd = opendir(DirName);
 
     if(fd == NULL)
@@ -36,6 +37,7 @@ void ChkType(char * DirName)
         exit(EXIT_FAILURE);        
     }
 
+    // readdir() => read data drom directory , return pointer pointing to dirent struct.
     while((ptr = readdir(fd)) != NULL)
     {
         printf("Name of file : %s\n",ptr->d_name);
@@ -62,6 +64,7 @@ void ChkType(char * DirName)
         }
     }
     
+    // closedir() => function closes the directory stream associated  with dirp.
     closedir(fd);
 
 }
@@ -75,6 +78,12 @@ void ChkType(char * DirName)
 
 int main(int argc,char *argv[])
 {   
+    // Handing segmentation fault in case no agrument passed by user.
+    if(argc != 3)
+    {
+        printf("Usage: %s <Directory_name> \n", argv[0]);
+        return -1;
+    }
     ChkType(argv[1]);
       
     return 0;

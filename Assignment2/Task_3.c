@@ -28,6 +28,7 @@ void ReadDirectory(char * DirName)
     DIR *fd = NULL;
     struct dirent *ptr =  NULL;
     
+    // opendir() => used to open directory file.
     fd = opendir(DirName);
 
     if(fd == NULL)
@@ -36,6 +37,7 @@ void ReadDirectory(char * DirName)
         exit(EXIT_FAILURE);        
     }
 
+    // readdir() => read data drom directory , return pointer pointing to dirent struct.
     while((ptr = readdir(fd)) != NULL)
     {
         if((strcmp(ptr->d_name,".")) == 0)
@@ -49,6 +51,7 @@ void ReadDirectory(char * DirName)
         printf("Name of file : %s\n",ptr->d_name);    
     }
     
+    // closedir() => function closes the directory stream associated  with dirp.
     closedir(fd);
 
 }
@@ -62,6 +65,13 @@ void ReadDirectory(char * DirName)
 
 int main(int argc,char *argv[])
 {   
+    // Handing segmentation fault in case no agrument passed by user.
+    if(argc != 3)
+    {
+        printf("Usage: %s <Directory_name> \n", argv[0]);
+        return -1;
+    }
+
     ReadDirectory(argv[1]);
       
     return 0;
