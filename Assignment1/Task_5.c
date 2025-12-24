@@ -27,8 +27,10 @@ void ReadFile(char * FileName,char *bytes)
 
     int byte = bytes[0] - '0'; 
     
+    // open() -> to open regular file.
     fd = open(FileName,O_RDONLY);
 
+    // read() -> read content from file into program buffer.
     iRet = read(fd,buffer,byte);
 
     if(iRet == -1)
@@ -49,6 +51,12 @@ void ReadFile(char * FileName,char *bytes)
 //////////////////////////////////////////////////////////////////
 int main(int argc,char **argv)
 {
+    // Handing segmentation fault in case no agrument passed by user.
+    if(argc != 3)
+    {
+        printf("Usage: %s <file_name> <bytes>\n", argv[0]);
+        return -1;
+    }
     ReadFile(argv[1],argv[2]);
 
     return 0;

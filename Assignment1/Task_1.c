@@ -3,7 +3,8 @@
 // • Handle errors using perror().
 
 #include<stdio.h>
-#include <fcntl.h>
+#include<fcntl.h>
+#include<unistd.h>
 #include<string.h>
 #include<errno.h>
 #include<stdlib.h>
@@ -42,7 +43,13 @@ void OpenFile(char * FileName)
 //////////////////////////////////////////////////////////////////
 int main(int argc, char **argv)
 {
-    
+    //Handing segmentation fault in case no agrument passed by user.
+    if(argc != 2)
+    {
+        printf("Usage: %s <File_name> \n", argv[0]);
+        return -1;
+    }
+
     OpenFile(argv[1]);
     
     return 0;

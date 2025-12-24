@@ -37,6 +37,7 @@ void ChkPermission(char * FileName, char *mode)
         permission = X_OK;
     }
     
+    // access() -> to check File has permission or not
     iRet = access(FileName,permission | F_OK);
 
     if(iRet == 0)
@@ -60,11 +61,13 @@ void ChkPermission(char * FileName, char *mode)
 //////////////////////////////////////////////////////////////////
 int main(int argc,char **argv)
 {
+    //Handing segmentation fault in case no agrument passed by user.
     if(argc != 3)
     {
         printf("Usage: %s <file_name> <mode(read,write,execute)>\n", argv[0]);
         return -1;
     }
+
     ChkPermission(argv[1],argv[2]);
 
     return 0;

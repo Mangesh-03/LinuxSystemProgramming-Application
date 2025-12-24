@@ -42,10 +42,11 @@ void OpenFile(char *FileName,char *mode)
     }
     else
     {
+        //perror() -> Handling error using errno ,printed it at stderr
         perror("Invalid mode :");
         exit(EXIT_FAILURE);
     }
-
+    // open() -> to open file in different mode 
     fd = open(FileName,iFlag,0777);
 
     if(fd == -1)
@@ -65,6 +66,12 @@ void OpenFile(char *FileName,char *mode)
 //////////////////////////////////////////////////////////////////
 int main(int argc,char **argv)
 {
+    //Handing segmentation fault in case no agrument passed by user.
+    if(argc != 3)
+    {
+        printf("Usage: %s <file_name> <mode(r,R,W,A)>\n", argv[0]);
+        return -1;
+    }
     
     OpenFile(argv[1],argv[2]);
     

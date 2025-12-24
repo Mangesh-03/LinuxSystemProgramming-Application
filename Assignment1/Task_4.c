@@ -23,6 +23,7 @@ void DisplayInfo(char * FileName)
     int iRet = 0;
     struct stat Buffer;
 
+    //stat() -> gives metadata about file from inode.
     iRet = stat(FileName,&Buffer);
 
     if(iRet == 0)
@@ -49,6 +50,13 @@ void DisplayInfo(char * FileName)
 //////////////////////////////////////////////////////////////////
 int main(int argc,char **argv)
 {
+    //Handing segmentation fault in case no agrument passed by user.
+    if(argc != 2)
+    {
+        printf("Usage: %s <file_name>\n", argv[0]);
+        return -1;
+    }
+
     DisplayInfo(argv[1]);
 
     return 0;
