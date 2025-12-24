@@ -45,7 +45,7 @@ void ChkPermission(char * FileName, char *mode)
     }
     else
     {
-        perror("File has no permission : ");
+        perror("Error ");
         exit(EXIT_FAILURE);
     }
 
@@ -60,6 +60,11 @@ void ChkPermission(char * FileName, char *mode)
 //////////////////////////////////////////////////////////////////
 int main(int argc,char **argv)
 {
+    if(argc != 3)
+    {
+        printf("Usage: %s <file_name> <mode(read,write,execute)>\n", argv[0]);
+        return -1;
+    }
     ChkPermission(argv[1],argv[2]);
 
     return 0;
