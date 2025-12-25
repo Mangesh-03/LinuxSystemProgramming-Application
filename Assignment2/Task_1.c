@@ -50,12 +50,16 @@ void ReadFile(char * FileName)
 
     // read() -> used to read data from the file.
     iRet = read(fd,buffer,BUFFER_SIZE);
-    
+    printf("Data from file is : %s \n",buffer);
     
     while(iRet > 0)
     {
-        printf("Data from file is : %s \n",buffer);
+        //memset() => used to flush and clean
+        memset(buffer,'\0',BUFFER_SIZE);
+        
         iRet = read(fd,buffer,BUFFER_SIZE);
+        
+        printf(" %s",buffer);
     }
     if(iRet == 0)
     {
@@ -83,7 +87,7 @@ void ReadFile(char * FileName)
 int main(int argc,char *argv[])
 {   
     // Handing segmentation fault in case no agrument passed by user.
-    if(argc != 3)
+    if(argc != 2)
     {
         printf("Usage: %s <file_name> \n", argv[0]);
         return -1;

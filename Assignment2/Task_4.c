@@ -79,7 +79,7 @@ void ChkType(char * DirName)
 int main(int argc,char *argv[])
 {   
     // Handing segmentation fault in case no agrument passed by user.
-    if(argc != 3)
+    if(argc != 2)
     {
         printf("Usage: %s <Directory_name> \n", argv[0]);
         return -1;

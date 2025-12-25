@@ -47,9 +47,8 @@ void WriteFile(char * FileName,char * str)
         exit(EXIT_FAILURE);        
     }
 
-
     // write() -> used to write data into file.
-    iRet = write(fd,str,sizeof(str));
+    iRet = write(fd,str,strlen(str));
 
     if(iRet <= 0)
     {
@@ -76,6 +75,8 @@ void WriteFile(char * FileName,char * str)
 
 int main(int argc,char *argv[])
 {   
+    char *str = NULL;
+
     // Handing segmentation fault in case no agrument passed by user.
     if(argc != 3)
     {

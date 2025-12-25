@@ -25,23 +25,24 @@
 //
 /////////////////////////////////////////////////////////////////
 
-
 void LargeFile(char * DirName)
 {
     DIR *fd = NULL;
     struct dirent *ptr =  NULL;
     
     struct stat sobj;
-    int iRet = 0,max = 0;
+    int iRet = 0;
+    off_t max = 0;
     
-    char *str = {'\0'};
+    char path[512] = {'\0'};
+    char *str = NULL;
     
     fd = opendir(DirName);
 
     if(fd == NULL)
     {
         perror("Failed to open Directory");
-        exit(EXIT_FAILURE);        
+        return;       
     }
 
     while((ptr = readdir(fd)) != NULL)
@@ -55,12 +56,15 @@ void LargeFile(char * DirName)
             continue;
         }
 
+        // making path 
+        snprintf(path,512,"%s/%s",DirName,ptr->d_name);
+
         // stat() => used retrive metadata about file from inode
-        iRet = stat(ptr->d_name,&sobj);
+        iRet = stat(path,&sobj);
         if(iRet == -1)
         {
             perror("Error in stat : ");
-            exit(EXIT_FAILURE);
+            return;
         }
         // printf("file name : %s and its size is %ld bytes\n",ptr->d_name,sobj.st_size);
         
@@ -72,7 +76,7 @@ void LargeFile(char * DirName)
 
     }
     
-    printf("\nLargest file name : %s and its size is %d bytes\n",str,max);
+    printf("\nLargest file name : %s and its size is %ld bytes\n",str,max);
     
     // closedir() => function closes the directory stream associated  with dirp.
     closedir(fd);
@@ -89,7 +93,7 @@ void LargeFile(char * DirName)
 int main(int argc,char *argv[])
 {   
     // Handing segmentation fault in case no agrument passed by user.
-    if(argc != 3)
+    if(argc != 2)
     {
         printf("Usage: %s <Directory_name> \n", argv[0]);
         return -1;
