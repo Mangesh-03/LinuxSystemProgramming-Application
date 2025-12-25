@@ -2,6 +2,12 @@
 // • Convert mode to flags (O_RDONLY, O_WRONLY, O_RDWR, O_APPEND | O_CREAT).
 // • Open file accordingly and display fd.
 
+////////////////////////////////////////////////////////////////
+//
+// Header Files
+//
+////////////////////////////////////////////////////////////////
+
 #include<stdio.h>
 #include <fcntl.h>
 #include<string.h>

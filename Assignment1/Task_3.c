@@ -2,6 +2,12 @@
 // • Use access() to check permission for current process.
 // • Print “Accessible / Not accessible” with reason.
 
+////////////////////////////////////////////////////////////////
+//
+// Header Files
+//
+////////////////////////////////////////////////////////////////
+
 #include<stdio.h>
 #include<unistd.h>
 #include<fcntl.h>

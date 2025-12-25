@@ -2,6 +2,12 @@
 // • Read exactly N bytes using read() and print on console.
 // • If file contains less than N, print only available bytes
 
+////////////////////////////////////////////////////////////////
+//
+// Header Files
+//
+////////////////////////////////////////////////////////////////
+
 #include<stdio.h>
 #include<string.h>
 #include<fcntl.h>
