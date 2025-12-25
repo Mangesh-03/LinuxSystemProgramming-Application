@@ -10,6 +10,7 @@
 #include<stdlib.h>
 #include <sys/types.h>
 #include <dirent.h>
+#include <sys/stat.h>
 
 /////////////////////////////////////////////////////////////////
 //
@@ -27,6 +28,10 @@ void ChkType(char * DirName)
 {
     DIR *fd = NULL;
     struct dirent *ptr =  NULL;
+    struct stat sobj ;
+    int iRet = 0;
+
+    char path[1024] = {'\0'};
     
     // opendir() => used to open directory file.
     fd = opendir(DirName);
@@ -41,26 +46,52 @@ void ChkType(char * DirName)
     while((ptr = readdir(fd)) != NULL)
     {
         printf("Name of file : %s\n",ptr->d_name);
-        
-        if(ptr->d_type == DT_BLK)
+
+        // flavour of printf for making absoulate path
+        // via realpath() call -> this attch fileName with path of CWD.
+        // realpath() works when operation happen in CWD otherwise being failed
+        snprintf(path,1024,"%s/%s",DirName,ptr->d_name);
+
+        iRet = lstat(path,&sobj);
+
+        if(iRet == -1)
         {
-            printf("File type : Device file\n\n");
+            printf("Unable to get stat %s\n",strerror(errno));
+            return;
         }
-        else if(ptr->d_type == DT_REG)
+
+        switch(sobj.st_mode & S_IFMT) 
         {
-            printf("File type : Regular file\n\n");
-        }
-        else if(ptr->d_type == DT_DIR)
-        {
-            printf("File type : Directory file\n\n");
-        }
-        else if(ptr->d_type == DT_LNK)
-        {
-            printf("File type : Symbolic link\n\n");
-        }
-        else if(ptr->d_type == DT_CHR)
-        {
-            printf("File type : character device\n\n");
+            case S_IFBLK:  
+                printf("block device\n");            
+                break;
+
+            case S_IFCHR:  
+                printf("character device\n");      
+                break;
+
+            case S_IFDIR:  
+                printf("directory\n");              
+                break;
+            case S_IFIFO:  
+                printf("FIFO/pipe\n");               
+                break;
+
+            case S_IFLNK:  
+                printf("symlink\n");                 
+                break;
+
+            case S_IFREG:  
+                printf("regular file\n");            
+                break;
+
+            case S_IFSOCK: 
+                printf("socket\n");                  
+                break;
+
+            default:       
+                printf("unknown?\n");                
+                break;
         }
     }
     
