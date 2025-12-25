@@ -34,10 +34,6 @@
 
 void MvFileDirToDir(char *src, char *des)
 {
-    //get src
-    // ori = src + "/" + ptr.name
-    // new = des + "/" + ptr.name
-    //opendir src -> readdir -> rename(ori,new)
 
     DIR *fd = NULL;
     struct dirent *ptr = NULL;
