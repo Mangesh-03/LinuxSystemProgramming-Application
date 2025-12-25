@@ -8,6 +8,7 @@
 #include<unistd.h>
 #include<errno.h>
 #include <sys/stat.h>
+#include <stdlib.h>
 
 /////////////////////////////////////////////////////////////////
 //
@@ -24,14 +25,12 @@ void ReadFile(char * FileName,char *bytes)
 {
     int iRet = 0,fd = 0;
     char buffer[100];
-
-    int byte = bytes[0] - '0'; 
     
     // open() -> to open regular file.
     fd = open(FileName,O_RDONLY);
 
     // read() -> read content from file into program buffer.
-    iRet = read(fd,buffer,byte);
+    iRet = read(fd,buffer,atoi(bytes));
 
     if(iRet == -1)
     {
