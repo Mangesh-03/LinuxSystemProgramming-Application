@@ -62,9 +62,9 @@ void ChkFilePresentInDir(char *DirName, char *FileName)
         return;
     }
 
-    if((realpath(FileName,AbsolutePath)) == NULL)
+    if((snprintf(AbsolutePath,MAX_PATH,"%s/%s",DirName,ptr->d_name)) <= 0)
     {
-        perror("Failed to get absolute path : ");
+        perror("Failed to get absolute path ");
         return;
     }
 

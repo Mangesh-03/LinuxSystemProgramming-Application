@@ -51,19 +51,22 @@ void CopyFileData(char *src, char *des)
 
     if(( fd1 == -1 ) || (fd2 == -1))
     {
-        perror("Failed to open file\n");
-        exit(EXIT_FAILURE);        
+        perror("Failed to open file");
+        return;        
     }
-    iRetSrc = read(fd1,buffer,BUFFER_SIZE); 
-
+    
     // while for read whole file and write it into destination
-    while((iRetSrc > 0))
+    while((iRetSrc = read(fd1,buffer,BUFFER_SIZE)) > 0)
     {
         iRetDes = write(fd2,buffer,iRetSrc);
 
-        memset(buffer,'\0',BUFFER_SIZE);
+        if(iRetDes == -1)
+        {
+            printf("Unable to move : %s\n",strerror(errno));
+            return;
+        }
 
-        iRetSrc = read(fd1,buffer,BUFFER_SIZE);
+        memset(buffer,'\0',BUFFER_SIZE);
 
     }
     if((iRetSrc == 0))
@@ -73,7 +76,7 @@ void CopyFileData(char *src, char *des)
     if(iRetSrc == -1 || iRetDes == -1)
     {
         perror("Failed to copy");
-        exit(EXIT_FAILURE); 
+        return;
     }
     
     close(fd1);
