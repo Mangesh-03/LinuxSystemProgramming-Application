@@ -1,16 +1,13 @@
-// File Copy Utility
+// File Copy with Offset
 
 // Problem Statement:
-// Write a program that copies the contents of one file into another.
+// Copy a file starting from a given byte offset of the source file.
 
 // Input:
-// Source file name and destination file name as command-line arguments.
+// source_file destination_file offset
 
 // Output:
-// Destination file containing an exact copy of source file.
-// • Handle file-not-found and permission errors.
-// • Destination file should be created if not present.
-
+// Partial file copied starting from offset.
 
 ///////////////////////////////////////////////////////////////////////////////
 //
@@ -131,7 +128,7 @@ void CopyUtilityWithOffset(char *SourceFile, char *DesFile,char *offset)
         iWritten = 0;
 
         // This Loop Specially designed by considering partial write problem
-        // if Buffer size is compatible to Destination loop execute once
+        // if Buffer size is compatible to Destination then loop execute once.
         while(iWritten < iRetRead)
         {
             /* 
