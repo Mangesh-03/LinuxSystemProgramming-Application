@@ -83,10 +83,13 @@ void CopyUtilityWithOffset(char *SourceFile, char *DesFile,char *offset)
 
     char Buffer[BUFFER_SIZE];
 
+    char NewDest[1024] = {'\0'};
+
     //if we want to copy file in same dir 
-    if(strcmp(SourceFile,DesFile) == 0)
+    if(strcmp(SourceFile, DesFile) == 0)
     {
-        DesFile = strcat(DesFile,"_copy");
+        snprintf(NewDest, sizeof(NewDest), "%s-copy", SourceFile);
+        DesFile = NewDest;
     }
 
     fd1 = open(SourceFile,O_RDONLY);
@@ -127,15 +130,19 @@ void CopyUtilityWithOffset(char *SourceFile, char *DesFile,char *offset)
     {
         iWritten = 0;
 
-        // This Loop Specially designed by considering partial write problem
-        // if Buffer size is compatible to Destination then loop execute once.
+        /*
+            This Loop Specially designed by considering partial write problem,
+            partial read means not write all bytes which are given in parameter
+            due to differ size of  system buffer and program local buffer but 
+            if Buffer size is compatible to Destination loop execute once
+        */
         while(iWritten < iRetRead)
         {
             /* 
                 write() => used to write .
-                here 2nd parameter looks weird but as handling partial writiing
-                we use pointer arthimetic for proper offset of buffer because write
-                changes offset of file table but not local buffer
+
+                here 2nd parameter looks weird but as handling partial writing
+                we use pointer arthimetic for write proper data from buffer.
             */
             iRetWrite = write(fd2,Buffer + iWritten,iRetRead - iWritten);
 

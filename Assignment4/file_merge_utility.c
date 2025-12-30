@@ -125,9 +125,9 @@ int MergeUtility(char *OutputFile,char **MergeFiles,int FilesCount)
             {
                 /* 
                     write() => used to write .
-                    here 2nd parameter looks weird but as handling partial writiing
-                    we use pointer arthimetic for proper offset of buffer because write
-                    changes offset of file table but not local buffer
+                    
+                    here 2nd parameter looks weird but as handling partial writing
+                    we use pointer arthimetic for write proper data from buffer.
                 */
                 iRetWrite = write(fd1,Buffer + iWritten,iRetRead - iWritten);
 

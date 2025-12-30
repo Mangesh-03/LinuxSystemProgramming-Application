@@ -1,16 +1,13 @@
-// File Copy Utility
+// 3. File Copy Using pread & pwrite
 
 // Problem Statement:
-// Write a program that copies the contents of one file into another.
+// Copy a file using pread() and pwrite() without changing the file offset.
 
 // Input:
-// Source file name and destination file name as command-line arguments.
+// Source and destination file names.
 
 // Output:
-// Destination file containing an exact copy of source file.
-// • Handle file-not-found and permission errors.
-// • Destination file should be created if not present.
-
+// Copied file identical to source.
 
 ///////////////////////////////////////////////////////////////////////////////
 //
@@ -25,6 +22,7 @@
 #include<errno.h>
 #include<unistd.h>
 #include<fcntl.h>
+#include<stdlib.h>
 
 ///////////////////////////////////////////////////////////////////////////////
 //
@@ -68,7 +66,7 @@ bool ChkFileExistAndPermission(char *FileName)
 //
 //  Function Name  :  CopyUtility()
 //  Description    :  Copies the contents of one file into another.
-//  Input          :  char*,char*
+//  Input          :  char*,char*,char*
 //  Output         :  -
 //  Author         :  Mangesh Ashok Bedre.
 //  Date           :  29/12/2025.
@@ -79,6 +77,7 @@ void CopyUtility(char *SourceFile, char *DesFile)
 {
     int fd1 = 0, fd2 = 0;
     int iRetRead = 0,iRetWrite = 0,iWritten = 0; 
+    off_t offset = 0;
 
     char Buffer[BUFFER_SIZE];
 
@@ -113,25 +112,23 @@ void CopyUtility(char *SourceFile, char *DesFile)
     // memset() => used here for set default value in Buffer to avoid garbage
     memset(Buffer,'\0',BUFFER_SIZE);
 
-    while((iRetRead = read(fd1,Buffer,BUFFER_SIZE)) > 0)
+    // pread() => used for reading data without changing file offset.
+    while((iRetRead = pread(fd1,Buffer,BUFFER_SIZE,offset)) > 0)
     {
         iWritten = 0;
 
-        /*
-            This Loop Specially designed by considering partial write problem,
-            partial read means not write all bytes which are given in parameter
-            due to differ size of  system buffer and program local buffer but 
-            if Buffer size is compatible to Destination loop execute once
-        */
+        // This Loop Specially designed by considering partial write problem
+        // if Buffer size is compatible to Destination then loop execute once.
         while(iWritten < iRetRead)
         {
             /* 
-                write() => used to write .
+                pwrite() => It is used for write data into file and 
+                            pwrite dont change the file offset.
                 
                 here 2nd parameter looks weird but as handling partial writing
                 we use pointer arthimetic for write proper data from buffer.
             */
-            iRetWrite = write(fd2,Buffer + iWritten,iRetRead - iWritten);
+            iRetWrite = pwrite(fd2,Buffer + iWritten,iRetRead - iWritten, offset + iWritten);
 
             if(iRetWrite == -1)
             {
@@ -142,10 +139,12 @@ void CopyUtility(char *SourceFile, char *DesFile)
                 return;
             }
             iWritten += iRetWrite;
-        }
-        
-        memset(Buffer,'\0',BUFFER_SIZE);
-    }    
+
+        }//End of while
+
+        offset += iRetRead;
+       
+    }// End of while    
 
 
     if (iRetRead == -1)
@@ -182,7 +181,7 @@ int main(int argc, char **argv)
         }
         else if((strcmp(argv[1],"--U") == 0) || (strcmp(argv[1],"--u") == 0))
         {
-            printf("./<Executable_Name> <Source_FileName> <Destination_FileName>\n");
+            printf("./<Executable_Name> <Source_FileName> <Destination_FileName> \n");
         }
         else
         {
