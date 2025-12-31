@@ -73,7 +73,7 @@ bool IsFile(char *FileName)
 //  Function Name  :  MergeUtility()
 //  Description    :  Merge the contents of files into one file.
 //  Input          :  char*,char**,int 
-//  Output         :  -
+//  Output         :  int
 //  Author         :  Mangesh Ashok Bedre.
 //  Date           :  29/12/2025.
 //
@@ -125,7 +125,7 @@ int MergeUtility(char *OutputFile,char **MergeFiles,int FilesCount)
             {
                 /* 
                     write() => used to write .
-                    
+
                     here 2nd parameter looks weird but as handling partial writing
                     we use pointer arthimetic for write proper data from buffer.
                 */
