@@ -87,6 +87,7 @@ void RecursiveDirTraversal(char *DirName)
         perror(DirName);
         return;
     }
+    //Printing only Name of Directory not all Path
     chptr = DirName;
 
     while(*chptr != '\0')
