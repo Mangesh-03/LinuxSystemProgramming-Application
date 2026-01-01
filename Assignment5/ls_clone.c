@@ -40,7 +40,7 @@
 //  Input           :   char*
 //  Output          :   -
 //  Author          :   Mangesh Ashok Bedre.
-//  Date            :   1/01/2026i Sh
+//  Date            :   1/01/2026
 //
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -153,7 +153,6 @@ int main(int argc, char **argv)
         }
         else
         {
-            printf("%s\n",argv[1]);
             ShowDirectoryStat(argv[1]);
         }
         
