@@ -1,0 +1,1 @@
+int LinkLib(char*);
